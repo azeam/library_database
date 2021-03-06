@@ -2,7 +2,8 @@ package com.db.library;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.db.library.UserDetails.UserRepository;
+import com.db.library.Entities.User;
+import com.db.library.Repositories.UserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

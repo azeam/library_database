@@ -2,17 +2,24 @@ package com.db.library.Controllers;
 
 import java.util.List;
 
-import com.db.library.Admin;
-import com.db.library.User;
-import com.db.library.UserDetails.AdminRepository;
-import com.db.library.UserDetails.UserRepository;
+import com.db.library.Entities.Admin;
+import com.db.library.Entities.Book;
+import com.db.library.Entities.Borrows;
+import com.db.library.Entities.User;
+import com.db.library.Repositories.AdminRepository;
+import com.db.library.Repositories.BookRepository;
+import com.db.library.Repositories.BorrowsRepository;
+import com.db.library.Repositories.UserRepository;
+import com.db.library.Services.BookService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AppController {
@@ -23,17 +30,36 @@ public class AppController {
 	@Autowired
 	private AdminRepository adminRepo;
 
+	@Autowired
+	private BookRepository bookRepo;
+
+	@Autowired
+	private BorrowsRepository borrowsRepo;
+
+	@Autowired
+    private BookService bookService;
+
 	@GetMapping("")
 	public String viewHomePage() {
 		return "index";
 	}
-	
-	@GetMapping("/library")
-	public String library(Model model) {
-		model.addAttribute("user", new User());
-		
-		return "library";
-	}
+
+	@RequestMapping("/library")
+    public String library(Model model, @Param("keyword") String keyword) {
+        List<Book> listBooks = bookService.listAll(keyword);
+        model.addAttribute("listBooks", listBooks);
+        model.addAttribute("keyword", keyword);
+         
+        return "library";
+    }	
+
+	@PostMapping("/borrow")
+    public String library(Borrows borrows, User user, @Param("bookId") Book book) {
+		borrows.setBook(book);
+	//	borrows.setBorrower(user);
+		borrowsRepo.save(borrows);
+        return "borrow";
+    }	
 
 	@GetMapping("/register")
 	public String showRegistrationForm(Model model) {
@@ -47,7 +73,7 @@ public class AppController {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
-		userRepo.save(user);
+		userRepo.saveAndFlush(user);
 		
 		return "register_success";
 	}
@@ -64,7 +90,7 @@ public class AppController {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(admin.getPassword());
 		admin.setPassword(encodedPassword);
-		adminRepo.save(admin);
+		adminRepo.saveAndFlush(admin);
 		
 		return "register_success";
 	}

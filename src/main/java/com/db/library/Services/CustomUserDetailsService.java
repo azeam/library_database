@@ -1,6 +1,8 @@
-package com.db.library.UserDetails;
+package com.db.library.Services;
 
-import com.db.library.User;
+import com.db.library.Entities.User;
+import com.db.library.Repositories.UserRepository;
+import com.db.library.UserDetails.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

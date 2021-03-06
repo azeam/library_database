@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RedirectController {
     @RequestMapping(value= {"/redirect"}, method = RequestMethod.GET)
-    public String defaultAfterLogin() {
+    public String redirectAfterLogin() {
         Collection<? extends GrantedAuthority> authorities;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         authorities = auth.getAuthorities();

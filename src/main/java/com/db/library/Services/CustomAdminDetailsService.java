@@ -1,6 +1,8 @@
-package com.db.library.UserDetails;
+package com.db.library.Services;
 
-import com.db.library.Admin;
+import com.db.library.Entities.Admin;
+import com.db.library.Repositories.AdminRepository;
+import com.db.library.UserDetails.CustomAdminDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

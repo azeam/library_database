@@ -1,6 +1,6 @@
 package com.db.library.Controllers;
 
-import com.db.library.User;
+import com.db.library.Entities.User;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,8 +2,8 @@ package com.db.library;
 
 import javax.sql.DataSource;
 
-import com.db.library.UserDetails.CustomAdminDetailsService;
-import com.db.library.UserDetails.CustomUserDetailsService;
+import com.db.library.Services.CustomAdminDetailsService;
+import com.db.library.Services.CustomUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
