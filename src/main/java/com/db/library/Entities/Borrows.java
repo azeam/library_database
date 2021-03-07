@@ -21,7 +21,9 @@ public class Borrows {
     @JoinColumn(name="bookId", nullable=true)
     private Book book;
 
-   
+    @ManyToOne
+    @JoinColumn(name="borrowerId", nullable=false)
+    private User borrower;
 
     public Book getBook() {
         return this.book;
@@ -31,7 +33,13 @@ public class Borrows {
         this.book = book;
     }
 
-   
+    public User getBorrower() {
+        return this.borrower;
+    }
+
+    public void setBorrower(User borrower) {
+        this.borrower = borrower;
+    }
 
     public Long getId() {
         return this.id;

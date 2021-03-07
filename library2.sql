@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Admin`
+--
+
+DROP TABLE IF EXISTS `Admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Admin` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `password` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Admin`
+--
+
+LOCK TABLES `Admin` WRITE;
+/*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Books`
 --
 
@@ -24,12 +48,12 @@ DROP TABLE IF EXISTS `Books`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Books` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
-  `pages` int DEFAULT NULL,
   `class` varchar(255) DEFAULT NULL,
+  `pages` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +62,7 @@ CREATE TABLE `Books` (
 
 LOCK TABLES `Books` WRITE;
 /*!40000 ALTER TABLE `Books` DISABLE KEYS */;
-INSERT INTO `Books` VALUES (0,'Den ensamma katten','Rudolf Ruskprick ',123,'Hce'),(1,'Vägen till Väterås','Kenny Surströmming',244,'Hce'),(2,'Grisarnas julafton','Orvar Satorsson',198,'Hce'),(3,'Blomkålsmördaren','Sara Tryffelsten',55,'uHce'),(4,'Min faster Ingeborg','Inga Skoghorn',763,'Hcf'),(5,'Askorbinsyra utan smör','Tore Tofs',199,'Hcf'),(6,'Lastbilens tankar','Oskar Rudenerg',452,'uHce'),(7,'Benny Bläcks liv','Benny Bläck',111,'Hce');
+INSERT INTO `Books` VALUES (1,'Vägen till Väterås','Kenny Surströmming','244','Hce'),(2,'Grisarnas julafton','Orvar Satorsson','198','Hce'),(3,'Blomkålsmördaren','Sara Tryffelsten','55','uHce'),(4,'Min faster Ingeborg','Inga Skoghorn','763','Hcf'),(5,'Askorbinsyra utan smör','Tore Tofs','199','Hcf'),(6,'Lastbilens tankar','Oskar Rudenerg','452','uHce'),(7,'Benny Bläcks liv','Benny Bläck','111','Hce'),(9,'Den ensamma katten','Rudolf Ruskprick ','123','Hce');
 /*!40000 ALTER TABLE `Books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,18 +101,15 @@ DROP TABLE IF EXISTS `Borrows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Borrows` (
-  `id` bigint NOT NULL,
-  `borrowerId` bigint DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `bookId` bigint DEFAULT NULL,
-  `magazineId` bigint DEFAULT NULL,
+  `borrowerId` bigint NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `magazineId` (`magazineId`),
-  KEY `borrowerId` (`borrowerId`),
-  KEY `bookId` (`bookId`),
-  CONSTRAINT `Borrows_ibfk_1` FOREIGN KEY (`magazineId`) REFERENCES `Magazines` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Borrows_ibfk_2` FOREIGN KEY (`borrowerId`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Borrows_ibfk_3` FOREIGN KEY (`bookId`) REFERENCES `Books` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK5tq2fyag791gv24hlxw9ifh00` (`bookId`),
+  KEY `FKkcqc5dumac0dwkf3r1yc94wvi` (`borrowerId`),
+  CONSTRAINT `FK5tq2fyag791gv24hlxw9ifh00` FOREIGN KEY (`bookId`) REFERENCES `Books` (`id`),
+  CONSTRAINT `FKkcqc5dumac0dwkf3r1yc94wvi` FOREIGN KEY (`borrowerId`) REFERENCES `Users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,35 +118,8 @@ CREATE TABLE `Borrows` (
 
 LOCK TABLES `Borrows` WRITE;
 /*!40000 ALTER TABLE `Borrows` DISABLE KEYS */;
-INSERT INTO `Borrows` VALUES (0,0,0,NULL),(1,0,3,NULL),(2,0,6,NULL),(3,0,7,NULL),(4,0,2,NULL);
+INSERT INTO `Borrows` VALUES (2,1,1);
 /*!40000 ALTER TABLE `Borrows` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `EmployeePhoneNrs`
---
-
-DROP TABLE IF EXISTS `EmployeePhoneNrs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `EmployeePhoneNrs` (
-  `id` bigint NOT NULL,
-  `employeeId` bigint DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `employeeId` (`employeeId`),
-  CONSTRAINT `EmployeePhoneNrs_ibfk_1` FOREIGN KEY (`employeeId`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `EmployeePhoneNrs`
---
-
-LOCK TABLES `EmployeePhoneNrs` WRITE;
-/*!40000 ALTER TABLE `EmployeePhoneNrs` DISABLE KEYS */;
-INSERT INTO `EmployeePhoneNrs` VALUES (0,1,'13647'),(1,1,'67869'),(2,2,'365868'),(3,2,'6789'),(4,3,'68686');
-/*!40000 ALTER TABLE `EmployeePhoneNrs` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -190,13 +184,13 @@ DROP TABLE IF EXISTS `Users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `password` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
+  `cardNr` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `cardNr` int DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +199,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,0,'$2a$10$74AvKgAyIityzub8McKkdudbrlIMB0ncdilGcNXNzkvfYNx3YBjqC','ejadmin'),(2,0,'$2a$10$0pKzAvGiqPH2LCILnqLvPOJAvl4q1SOl0TzOLsIDhUInt7sSoAE6C','testtest');
+INSERT INTO `Users` VALUES (1,'fdafda','fdsafda','$2a$10$wS4Gd4sluUCpCLmAs0nvKuAJUl9KydjMwGomY4WyHoWukhSAakceW','fdsadfa','test');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +234,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-05 15:20:42
+-- Dump completed on 2021-03-06 19:02:01

@@ -33,7 +33,18 @@ public class User {
 
     @Column(name = "phone", nullable = true, length = 255)
     private String phone;
-	
+
+	@OneToMany(mappedBy="borrower", cascade = CascadeType.ALL)
+    private List<Borrows> userBorrows;
+
+	public List<Borrows> getUserBorrows() {
+		return this.userBorrows;
+	}
+
+	public void setUserBorrows(List<Borrows> userBorrows) {
+		this.userBorrows = userBorrows;
+	}
+
     public String getAddress() {
         return this.address;
     }
