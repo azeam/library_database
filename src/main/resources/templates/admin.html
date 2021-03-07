@@ -30,15 +30,18 @@
 					<th>Address</th>
 					<th>Phone</th>
 					<th>Card number</th>
+					<th>Borrowed books</th>
 				</tr>
 			</thead>
 			<tbody>
+
 				<tr th:each="user: ${listUsers}">
 					<td th:text="${user.id}">User ID</td>
 					<td th:text="${user.username}">Username</td>
 					<td th:text="${user.address}">Address</td>
 					<td th:text="${user.phone}">Phone</td>
 					<td th:text="${user.cardNr}">Card number</td>
+					<td th:text="${user.borrowedBooksString}">Borrows</td>
 				</tr>
 				
 			</tbody>

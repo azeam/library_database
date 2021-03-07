@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface BorrowsRepository extends JpaRepository<Borrows, Long> {
-    @Query("SELECT b FROM Book b WHERE b.title LIKE %?1%")
+    @Query("SELECT b FROM Book b JOIN Borrows c ON b.id = c.book JOIN User u ON c.borrower = u")
     public List<Book> findByTitle(String title);
 }

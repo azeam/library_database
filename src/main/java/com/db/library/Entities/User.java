@@ -1,6 +1,8 @@
 package com.db.library.Entities;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,11 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Users")
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,6 +39,9 @@ public class User {
 
 	@OneToMany(mappedBy="borrower", cascade = CascadeType.ALL)
     private List<Borrows> userBorrows;
+
+	@Transient
+	private List<String> borrowedBooksString;
 
 	public List<Borrows> getUserBorrows() {
 		return this.userBorrows;
@@ -91,6 +97,16 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@Transient
+	public void setBorrowedBooksString(List<String> borrowedBooks) {
+		this.borrowedBooksString = borrowedBooks;
+	}
+
+	@Transient
+	public List<String> getBorrowedBooksString() {
+		return this.borrowedBooksString;
 	}
 	
 }

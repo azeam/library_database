@@ -48,10 +48,10 @@ DROP TABLE IF EXISTS `Books`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Books` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `author` varchar(255) DEFAULT NULL,
-  `class` varchar(255) DEFAULT NULL,
-  `pages` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `pages` varchar(255) DEFAULT NULL,
+  `class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

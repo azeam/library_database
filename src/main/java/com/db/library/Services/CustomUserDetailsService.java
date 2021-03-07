@@ -1,6 +1,13 @@
 package com.db.library.Services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import com.db.library.Entities.Book;
+import com.db.library.Entities.Borrows;
 import com.db.library.Entities.User;
+import com.db.library.Repositories.BookRepository;
 import com.db.library.Repositories.UserRepository;
 import com.db.library.UserDetails.CustomUserDetails;
 
@@ -13,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private BookRepository bookRepo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

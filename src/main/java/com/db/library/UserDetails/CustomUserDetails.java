@@ -71,4 +71,8 @@ public class CustomUserDetails implements UserDetails {
 		return user;
 	}
 
+	public List<String> getBorrowedBooks() {
+		return user.getBorrowedBooksString();
+	}
+
 }
