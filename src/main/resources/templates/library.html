@@ -58,10 +58,7 @@
 					<td th:text="${book.pages}">Pages</td>
 					<td th:text="${book.category}">Class</td>
                     <td>
-
-                        POST REQUEST
-
-                        <a th:if="${book.borrows.size == 0}" th:href="@{/borrow}" th:value="${book}">Borrow</a>
+                        <a th:if="${book.borrows.size == 0}" th:href="@{/borrow?book={book} (book=${book.id})}">Borrow</a>
                         <span th:if="${book.borrows.size > 0}">Not in stock</span>
                     </td>
                 </tr>

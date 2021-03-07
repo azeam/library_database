@@ -107,8 +107,8 @@ CREATE TABLE `Borrows` (
   PRIMARY KEY (`id`),
   KEY `FK5tq2fyag791gv24hlxw9ifh00` (`bookId`),
   KEY `FKkcqc5dumac0dwkf3r1yc94wvi` (`borrowerId`),
-  CONSTRAINT `FK5tq2fyag791gv24hlxw9ifh00` FOREIGN KEY (`bookId`) REFERENCES `Books` (`id`),
-  CONSTRAINT `FKkcqc5dumac0dwkf3r1yc94wvi` FOREIGN KEY (`borrowerId`) REFERENCES `Users` (`id`)
+  CONSTRAINT `FK5tq2fyag791gv24hlxw9ifh00` FOREIGN KEY (`bookId`) REFERENCES `Books` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKkcqc5dumac0dwkf3r1yc94wvi` FOREIGN KEY (`borrowerId`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

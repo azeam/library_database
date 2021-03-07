@@ -11,15 +11,18 @@ import com.db.library.Repositories.BookRepository;
 import com.db.library.Repositories.BorrowsRepository;
 import com.db.library.Repositories.UserRepository;
 import com.db.library.Services.BookService;
+import com.db.library.UserDetails.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AppController {
@@ -49,22 +52,23 @@ public class AppController {
         List<Book> listBooks = bookService.listAll(keyword);
         model.addAttribute("listBooks", listBooks);
         model.addAttribute("keyword", keyword);
-         
         return "library";
     }	
 
-	@PostMapping("/borrow")
-    public String library(Borrows borrows, User user, @Param("bookId") Book book) {
+	@RequestMapping(value = "/borrow", method = RequestMethod.GET)
+    public String library(Authentication authentication, @Param("book") Book book) {
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		User user = userDetails.getUser();
+		Borrows borrows = new Borrows();
+		borrows.setBorrower(user);
 		borrows.setBook(book);
-	//	borrows.setBorrower(user);
 		borrowsRepo.save(borrows);
-        return "borrow";
+        return "library";
     }	
 
 	@GetMapping("/register")
 	public String showRegistrationForm(Model model) {
 		model.addAttribute("user", new User());
-		
 		return "signup_form";
 	}
 	

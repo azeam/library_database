@@ -67,4 +67,8 @@ public class CustomUserDetails implements UserDetails {
 		return user.getCardNr();
 	}
 
+	public User getUser() {
+		return user;
+	}
+
 }
