@@ -16,6 +16,7 @@ import com.db.library.Repositories.BorrowsRepository;
 import com.db.library.Repositories.UserRepository;
 import com.db.library.Services.BookService;
 import com.db.library.Services.MagazineService;
+import com.db.library.UserDetails.CustomAdminDetails;
 import com.db.library.UserDetails.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,13 @@ public class AppController {
 		borrows.setBook(book);
 		borrowsRepo.save(borrows);
         return "redirect:/library";
+    }	
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(Authentication authentication, @Param("admin") Admin admin, @Param("address") String address, @Param("salary") String salary) {
+		admin.setAddress(address);
+		adminRepo.save(admin);
+        return "redirect:/admin";
     }	
 
 	@GetMapping("/register")

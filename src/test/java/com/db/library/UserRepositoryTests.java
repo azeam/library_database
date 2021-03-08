@@ -2,8 +2,9 @@ package com.db.library;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.db.library.Entities.Admin;
 import com.db.library.Entities.User;
-import com.db.library.Repositories.UserRepository;
+import com.db.library.Repositories.AdminRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +24,19 @@ public class UserRepositoryTests {
     private TestEntityManager entityManager;
      
     @Autowired
-    private UserRepository repo;
+    private AdminRepository repo;
      
     @Test
     public void testCreateUser() {
-        User user = new User();
-        user.setUsername("admin2");
+        Admin user = new Admin();
+        user.setUsername("admin4");
  
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode("admin");       
         user.setPassword(encodedPassword);
-        
-        User savedUser = repo.saveAndFlush(user);
-        User existUser = entityManager.find(User.class, savedUser.getId());
+        user.setAddress("test");
+        Admin savedUser = repo.saveAndFlush(user);
+        Admin existUser = entityManager.find(Admin.class, savedUser.getId());
         
         assertThat(user.getUsername()).isEqualTo(existUser.getUsername());
         

@@ -20,6 +20,39 @@ public class Admin {
 	
 	@Column(name = "username", nullable = false, length = 255)
 	private String username;
+
+	@Column(name = "salary", nullable = true, length = 255)
+	private String salary;
+
+	@Column(name = "address", nullable = true, length = 255)
+	private String address;
+
+	@Column(name = "vacationDays", nullable = true, length = 255)
+	private String vacationDays;
+
+	public String getSalary() {
+		return this.salary;
+	}
+
+	public void setSalary(String salary) {
+		this.salary = salary;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getVacationDays() {
+		return this.vacationDays;
+	}
+
+	public void setVacationDays(String vacationDays) {
+		this.vacationDays = vacationDays;
+	}
 	
 	public Long getId() {
 		return id;

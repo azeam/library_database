@@ -55,24 +55,8 @@ public class CustomUserDetails implements UserDetails {
 		return true;
 	}
 
-	public String address() {
-		return user.getAddress();
-	}
-
-	public String phone() {
-		return user.getPhone();
-	}
-
-	public String cardNr() {
-		return user.getCardNr();
-	}
-
 	public User getUser() {
 		return user;
-	}
-
-	public List<String> getBorrowedBooks() {
-		return user.getBorrowedBooksString();
 	}
 
 }
