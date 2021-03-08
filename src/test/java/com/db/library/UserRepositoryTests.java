@@ -3,7 +3,6 @@ package com.db.library;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.db.library.Entities.Admin;
-import com.db.library.Entities.User;
 import com.db.library.Repositories.AdminRepository;
 
 import org.junit.jupiter.api.Test;

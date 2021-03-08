@@ -41,7 +41,6 @@ public class Book {
     public void setBorrows(List<Borrows> borrows) {
         this.borrows = borrows;
     }
- 
 
     public Long getId() {
         return this.id;
@@ -82,8 +81,5 @@ public class Book {
     public void setCategory(String category) {
         this.category = category;
     }
-    
-    
-    
     
 }

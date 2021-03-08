@@ -20,6 +20,7 @@ public class CustomAdminDetailsService implements UserDetailsService {
 		if (admin == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
+		
 		return new CustomAdminDetails(admin);
 	}
 

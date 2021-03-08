@@ -1,7 +1,5 @@
 package com.db.library;
 
-import javax.sql.DataSource;
-
 import com.db.library.Services.CustomAdminDetailsService;
 import com.db.library.Services.CustomUserDetailsService;
 
@@ -19,8 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private DataSource dataSource;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,13 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/admin").hasAuthority("ADMIN")
-			.antMatchers("/library").authenticated()
+			.antMatchers("/admin").hasAuthority("ADMIN") // only admins have access to admin page
+			.antMatchers("/library").authenticated() // logged in users have access to library
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
 				.usernameParameter("username")
-				.defaultSuccessUrl("/redirect")
+				.defaultSuccessUrl("/redirect") // check current user's permissions and redirect from there
 				.permitAll()
 			.and()
 			.logout().logoutSuccessUrl("/").permitAll();

@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.db.library.Entities.Book;
-import com.db.library.Entities.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b FROM Book b WHERE b.title LIKE %?1%")

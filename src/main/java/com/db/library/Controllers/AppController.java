@@ -1,5 +1,6 @@
 package com.db.library.Controllers;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +17,6 @@ import com.db.library.Repositories.BorrowsRepository;
 import com.db.library.Repositories.UserRepository;
 import com.db.library.Services.BookService;
 import com.db.library.Services.MagazineService;
-import com.db.library.UserDetails.CustomAdminDetails;
 import com.db.library.UserDetails.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,6 @@ public class AppController {
     public String library(Model model, @Param("keyword") String keyword, @Param("keywordMag") String keywordMag) {
         List<Book> listBooks = bookService.listAll(keyword);
         model.addAttribute("listBooks", listBooks);
-        model.addAttribute("keyword", keyword);
 
 		List<Magazine> listMagazines = magazineService.listAll(keywordMag);
         model.addAttribute("listMagazines", listMagazines);
@@ -81,16 +80,28 @@ public class AppController {
         return "redirect:/library";
     }	
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(Authentication authentication, @Param("admin") Admin admin, @Param("address") String address, @Param("salary") String salary) {
-		admin.setAddress(address);
+	@RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
+    public String editAdmin(Authentication authentication, @Param("admin") Admin admin, @Param("address") String address, @Param("vacationDays") String vacationDays, @Param("username") String username, @Param("salary") String salary) {
+		if (address != null) {
+			admin.setAddress(address);
+		}
+		if (salary != null) {
+			admin.setSalary(salary);
+		}
+		if (username != null) {
+			admin.setUsername(username);
+		}
+		if (vacationDays != null) {
+			admin.setVacationDays(vacationDays);
+		}
 		adminRepo.save(admin);
         return "redirect:/admin";
     }	
 
 	@GetMapping("/register")
-	public String showRegistrationForm(Model model) {
+	public String showRegistrationForm(Model model, @Param("error") String error) {
 		model.addAttribute("user", new User());
+		model.addAttribute("error", error);
 		return "signup_form";
 	}
 	
@@ -99,13 +110,33 @@ public class AppController {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
-		userRepo.saveAndFlush(user);
+		try {
+			userRepo.saveAndFlush(user);
+		} catch (Exception e) { 
+			/* 
+				Get unique key error if user already exists and show user, probably not the best way to handle this but
+				it was difficult to get the repositories (same for admin register) in a custom validator...
+			*/ 
+			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
+				SQLIntegrityConstraintViolationException dupEx = (SQLIntegrityConstraintViolationException) e.getCause().getCause() ;
+				if (dupEx.getErrorCode() == 1062) {
+					return "redirect:/register?error=1062";
+				}
+				else {
+					throw e;
+				}
+			} else {
+				throw e;
+			}
+		}
+		
 		return "register_success";
 	}
 
 	@GetMapping("/admin_register")
-	public String showAdminRegistrationForm(Model model) {
+	public String showAdminRegistrationForm(Model model, @Param("error") String error) {
 		model.addAttribute("admin", new Admin());
+		model.addAttribute("error", error);
 		return "signup_form_admin";
 	}
 	
@@ -114,7 +145,22 @@ public class AppController {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(admin.getPassword());
 		admin.setPassword(encodedPassword);
-		adminRepo.saveAndFlush(admin);
+		
+		try {
+			adminRepo.saveAndFlush(admin);
+		} catch (Exception e) { 
+			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
+				SQLIntegrityConstraintViolationException dupEx = (SQLIntegrityConstraintViolationException) e.getCause().getCause() ;
+				if (dupEx.getErrorCode() == 1062) {
+					return "redirect:/admin_register?error=1062";
+				}
+				else {
+					throw e;
+				}
+			} else {
+				throw e;
+			}
+		}
 		return "register_success";
 	}
 	
@@ -151,7 +197,7 @@ public class AppController {
     }
 
 	@GetMapping("/login")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+	public String greeting(@RequestParam(name="name", required=false, defaultValue="user") String name, Model model) {
 		model.addAttribute("name", name);
 		return "login";
 	}

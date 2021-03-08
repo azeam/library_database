@@ -18,7 +18,7 @@ public class Admin {
 	@Column(nullable = false, length = 255)
 	private String password;
 	
-	@Column(name = "username", nullable = false, length = 255)
+	@Column(name = "username", nullable = false, length = 255, unique = true)
 	private String username;
 
 	@Column(name = "salary", nullable = true, length = 255)

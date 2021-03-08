@@ -60,21 +60,34 @@
 					<th>Address</th>
 					<th>Salary</th>
 					<th>Vacation days</th>
-					<th>Edit</th>
+					
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="admin: ${listAdmins}">
+
 					<td th:text="${admin.id}">User ID</td>
-					<td th:text="${admin.username}">Username</td>
-					<td th:text="${admin.address}">Address</td>
-					<td th:text="${admin.salary}">Salary</td>
-					<td th:text="${admin.vacationDays}">Vacation days</td>
 					<td>
-						<form method="POST" th:action="@{/edit(admin=${admin.id}, salary='test')}">
-							<button type="submit" name="submit" value="value" class="link-button">Edit</button>
+						<form method="POST" th:action="@{/editAdmin(admin=${admin.id})}">
+							<input type="text" name="username" class="form-control" th:value="*{admin.username}" >
 						</form>
 					</td>
+					<td>
+						<form method="POST" th:action="@{/editAdmin(admin=${admin.id})}">
+							<input type="text" name="address" class="form-control" th:value="*{admin.address}" >
+						</form>
+					</td>
+					<td>
+						<form method="POST" th:action="@{/editAdmin(admin=${admin.id})}">
+							<input type="text" name="salary" class="form-control" th:value="*{admin.salary}" >
+						</form>
+					</td>
+					<td>
+						<form method="POST" th:action="@{/editAdmin(admin=${admin.id})}">
+							<input type="text" name="vacationDays" class="form-control" th:value="*{admin.vacationDays}" >
+						</form>
+					</td>					
+
 				</tr>
 			</tbody>
 		</table>
