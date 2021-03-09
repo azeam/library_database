@@ -6,6 +6,7 @@ import com.db.library.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	// set bcrypt encoder for password
 	private DaoAuthenticationProvider userAuthProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
@@ -60,14 +62,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/admin").hasAuthority("ADMIN") // only admins have access to admin page
 			.antMatchers("/library").authenticated() // logged in users have access to library
+			.antMatchers(HttpMethod.POST, "/borrow").authenticated()
+			.antMatchers(HttpMethod.POST, "/editAdmin").hasAuthority("ADMIN")
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
 				.usernameParameter("username")
-				.defaultSuccessUrl("/redirect") // check current user's permissions and redirect from there
+				.defaultSuccessUrl("/redirect", true) // check current user's permissions and redirect from there, true bool fixes redirect issue at admin page (param = alwaysUse)
 				.permitAll()
 			.and()
-			.logout().logoutSuccessUrl("/").permitAll();
+			.logout().logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
 	}
 	
 }

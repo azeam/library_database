@@ -18,7 +18,8 @@ public class CustomAdminDetails implements UserDetails {
 		this.user = user;
 	}
 
-	@Override
+	// give admin entity "ADMIN" auth
+ 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
         list.add(new SimpleGrantedAuthority("ADMIN"));

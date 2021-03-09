@@ -13,6 +13,7 @@ public class MagazineService {
     @Autowired
     private MagazineRepository repo;
      
+    // search if keyword is set, otherwise show all magazines
     public List<Magazine> listAll(String keywordMag) {
         if (keywordMag != null) {
             return repo.findByTitle(keywordMag);

@@ -18,6 +18,7 @@ public class CustomUserDetails implements UserDetails {
 		this.user = user;
 	}
 
+	// give user entity "USER" auth
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();

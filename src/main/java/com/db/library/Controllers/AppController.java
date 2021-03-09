@@ -71,6 +71,7 @@ public class AppController {
 
 	@RequestMapping(value = "/borrow", method = RequestMethod.POST)
     public String library(Authentication authentication, @Param("book") Book book) {
+		// get authenticated user and set as borrower, prevents authenticated users from sending requests (borrow books) for other users
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		User user = userDetails.getUser();
 		Borrows borrows = new Borrows();
@@ -82,6 +83,7 @@ public class AppController {
 
 	@RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
     public String editAdmin(Authentication authentication, @Param("admin") Admin admin, @Param("address") String address, @Param("vacationDays") String vacationDays, @Param("username") String username, @Param("salary") String salary) {
+		// check if field is changed (param set) and update
 		if (address != null) {
 			admin.setAddress(address);
 		}
@@ -107,15 +109,17 @@ public class AppController {
 	
 	@PostMapping("/process_register")
 	public String processRegister(User user) {
+		// set bcrypt encoded password to entity
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
+		// save to db
 		try {
 			userRepo.saveAndFlush(user);
 		} catch (Exception e) { 
 			/* 
 				Get unique key error if user already exists and show user, probably not the best way to handle this but
-				it was difficult to get the repositories (same for admin register) in a custom validator...
+				it was difficult to make the repositories (same for admin register) available in a custom validator...
 			*/ 
 			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
 				SQLIntegrityConstraintViolationException dupEx = (SQLIntegrityConstraintViolationException) e.getCause().getCause() ;
@@ -133,6 +137,7 @@ public class AppController {
 		return "register_success";
 	}
 
+	// having an "admin register" page makes no sense at all, but there it is anyway
 	@GetMapping("/admin_register")
 	public String showAdminRegistrationForm(Model model, @Param("error") String error) {
 		model.addAttribute("admin", new Admin());
@@ -142,10 +147,11 @@ public class AppController {
 	
 	@PostMapping("/process_admin_register")
 	public String processRegister(Admin admin) {
+		// set bcrypt encoded password to entity
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(admin.getPassword());
 		admin.setPassword(encodedPassword);
-		
+		// save to db		
 		try {
 			adminRepo.saveAndFlush(admin);
 		} catch (Exception e) { 
@@ -169,9 +175,12 @@ public class AppController {
 		List<User> listUsers = userRepo.findAll();
 		List<Admin> listAdmins = adminRepo.findAll();
 
+		// rather ugly way of getting the book titles as string for the borrowed books this but tried various (better) 
+		// options without success
 		for (User user : listUsers) {
 			List<String> borrowedBooks = new ArrayList<String>();
 			for (Borrows borrow : user.getUserBorrows()) {
+				// findById only returns optional, needs lambda check
 				Optional<Book> book = bookRepo.findById(borrow.getId());
 				book.ifPresent(b -> borrowedBooks.add(b.getTitle()));
 			}
@@ -183,7 +192,7 @@ public class AppController {
 		return "admin";
 	}
 
-	// TODO: after going to admin page -> back to login -> login as user it will redirect to admin page for some reason
+	// redirect authenticated user after successful login
 	@RequestMapping(value= {"/redirect"}, method = RequestMethod.GET)
     public String redirectAfterLogin() {
         Collection<? extends GrantedAuthority> authorities;

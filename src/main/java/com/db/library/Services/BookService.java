@@ -13,6 +13,7 @@ public class BookService {
     @Autowired
     private BookRepository repo;
      
+    // search if keyword is set, otherwise show all books
     public List<Book> listAll(String keyword) {
         if (keyword != null) {
             return repo.findByTitle(keyword);
