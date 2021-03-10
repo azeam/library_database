@@ -38,6 +38,7 @@ public class User {
 	@OneToMany(mappedBy="borrower", cascade = CascadeType.ALL)
     private List<Borrows> userBorrows;
 
+	// not part of db, only used for display
 	@Transient
 	private String borrowedBooksString;
 
