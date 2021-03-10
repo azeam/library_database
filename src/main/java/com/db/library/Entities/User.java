@@ -39,7 +39,7 @@ public class User {
     private List<Borrows> userBorrows;
 
 	@Transient
-	private List<String> borrowedBooksString;
+	private String borrowedBooksString;
 
 	public List<Borrows> getUserBorrows() {
 		return this.userBorrows;
@@ -98,12 +98,12 @@ public class User {
 	}
 
 	@Transient
-	public void setBorrowedBooksString(List<String> borrowedBooks) {
-		this.borrowedBooksString = borrowedBooks;
+	public void setBorrowedBooksString(String borrowedBooksString) {
+		this.borrowedBooksString = borrowedBooksString;
 	}
 
 	@Transient
-	public List<String> getBorrowedBooksString() {
+	public String getBorrowedBooksString() {
 		return this.borrowedBooksString;
 	}
 	

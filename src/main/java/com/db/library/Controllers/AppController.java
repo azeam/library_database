@@ -179,12 +179,21 @@ public class AppController {
 		// options without success
 		for (User user : listUsers) {
 			List<String> borrowedBooks = new ArrayList<String>();
+			String borrowedBooksString = "";
 			for (Borrows borrow : user.getUserBorrows()) {
 				// findById only returns optional, needs lambda check
 				Optional<Book> book = bookRepo.findById(borrow.getId());
 				book.ifPresent(b -> borrowedBooks.add(b.getTitle()));
 			}
-			user.setBorrowedBooksString(borrowedBooks);
+			for (int i = 0; i < borrowedBooks.size(); i++) {
+				if (i == borrowedBooks.size() - 1) {
+					borrowedBooksString += borrowedBooks.get(i);					
+				}
+				else {
+					borrowedBooksString += borrowedBooks.get(i) + ", ";
+				}
+			}
+			user.setBorrowedBooksString(borrowedBooksString);
 		}
 		
 		model.addAttribute("listUsers", listUsers);

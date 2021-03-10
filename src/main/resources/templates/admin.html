@@ -41,8 +41,7 @@
 					<td th:text="${user.address}">Address</td>
 					<td th:text="${user.phone}">Phone</td>
 					<td th:text="${user.cardNr}">Card number</td>
-					<td th:if="${user.borrowedBooksString.size > 0}" th:text="${user.borrowedBooksString}">Borrows</td>
-					<td th:if="${user.borrowedBooksString.size == 0}">-</td>
+					<td th:text="${user.borrowedBooksString}">Borrows</td>
 				</tr>
 				
 			</tbody>
